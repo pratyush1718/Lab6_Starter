@@ -41,10 +41,12 @@ function addRecipesToDocument(recipes) {
   //            create a <recipe-card> element for each one, and populate
   //            each <recipe-card> with that recipe data using element.data = ...
   //            Append each element to <main>
-  for(const recipe of recipes){
-    const recipeCardEl = document.createElement('recipe-card');
-    recipeCardEl.data = recipe;
-    mainElement.appendChild(recipeCardEl);
+  if (recipes){
+    for(const recipe of recipes){
+      const recipeCardEl = document.createElement('recipe-card');
+      recipeCardEl.data = recipe;
+      mainElement.appendChild(recipeCardEl);
+    }
   }
 }
 
@@ -75,8 +77,6 @@ function initFormHandler() {
     // Steps B4-B9 will occur inside the event listener from step B3
     // B4. TODO - Create a new FormData object from the <form> element reference above
     const formData = new FormData(formEl);
-    console.log('this is the form data')
-    console.log(formData)
     // B5. TODO - Create an empty object (I'll refer to this object as recipeObject to
     //            make this easier to read), and then extract the keys and corresponding
     //            values from the FormData object and insert them into recipeObject
@@ -96,8 +96,13 @@ function initFormHandler() {
     // B9. TODO - Get the recipes array from localStorage, add this new recipe to it, and
     //            then save the recipes array back to localStorage
     const recipeFromStorage = JSON.parse(localStorage.getItem('recipes'));
-    const newRecipes = [...recipeFromStorage, recipeObject];
-    saveRecipesToStorage(newRecipes);
+    if(!recipeFromStorage){
+      const newRecipes = [recipeObject];
+      saveRecipesToStorage(newRecipes);
+    }else{
+      const newRecipesTwo = [...recipeFromStorage, recipeObject];
+      saveRecipesToStorage(newRecipesTwo);
+    }
 
   })
 
